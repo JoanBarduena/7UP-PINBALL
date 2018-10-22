@@ -1,0 +1,10 @@
+﻿  ModulePhysics.cpp
+c:\users\badli\documents\physics2_class_4_handout\modulephysics.cpp(40): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\badli\documents\physics2_class_4_handout\modulephysics.cpp(121): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\badli\documents\physics2_class_4_handout\modulephysics.cpp(122): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\badli\documents\physics2_class_4_handout\modulephysics.cpp(165): warning C4018: '<': no coinciden signed/unsigned
+c:\users\badli\documents\physics2_class_4_handout\modulephysics.cpp(304): warning C4244: 'argumento': conversión de 'float32' a 'int'; posible pérdida de datos
+c:\users\badli\documents\physics2_class_4_handout\modulephysics.cpp(377): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\badli\documents\physics2_class_4_handout\modulephysics.cpp(378): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\badli\documents\physics2_class_4_handout\modulephysics.cpp(384): warning C4244: 'return': conversión de 'float32' a 'int'; posible pérdida de datos
+  SDL Game.vcxproj -> C:\Users\badli\Documents\Physics2_class_4_handout\Debug\2D Physics - class 4.exe
