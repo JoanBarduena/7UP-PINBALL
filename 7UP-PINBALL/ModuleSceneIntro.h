@@ -26,6 +26,23 @@ public:
 
 	//Collider Bodies
 	PhysBody* map_;
+	PhysBody* top_left_1; 
+	PhysBody* top_left_2;
+	PhysBody* top_left_3; 
+	PhysBody* middle_top_1; 
+	PhysBody* middle_top_2; 
+	PhysBody* middle_;
+	PhysBody* top_right_1;
+	PhysBody* top_right_2;
+	PhysBody* bottom_right_1; 
+	PhysBody* bottom_right_2; 
+	PhysBody* bottom_left_1; 
+	PhysBody* bottom_left_2; 
+	PhysBody* football_1; 
+	PhysBody* football_2; 
+	PhysBody* football_3; 
+	PhysBody* ball_corridor_1; 
+	PhysBody* ball_corridor_2; 
 
 	SDL_Texture* circle;
 	SDL_Texture* box;

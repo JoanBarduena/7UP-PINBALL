@@ -23,7 +23,7 @@
 #include "Collision/b2Collision.h"
 #include "Collision/Shapes/b2Shape.h"
 
-class b2BlockAllocator;
+class b2BlockAllocator; 
 class b2Body;
 class b2BroadPhase;
 class b2Fixture;
