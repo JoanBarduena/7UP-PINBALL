@@ -471,7 +471,7 @@ void ModuleSceneIntro::DrawColliders()
 	193, 241,
 	189, 238
 	};
-	football_1 = App->physics->CreateChain(0, 0, football1, 30); 
+	football_1 = App->physics->CreateChain(0, 0, football1, 30, 1.0f); 
 
 	int football2[30] = {
 	233, 195,
@@ -490,7 +490,7 @@ void ModuleSceneIntro::DrawColliders()
 	235, 191,
 	232, 194
 	};
-	football_2 = App->physics->CreateChain(0, 0, football2, 30); 
+	football_2 = App->physics->CreateChain(0, 0, football2, 30, 1.0f); 
 
 	int football3[30] = {
 	277, 226,
@@ -509,5 +509,5 @@ void ModuleSceneIntro::DrawColliders()
 	279, 224,
 	276, 226
 	};
-	football_3 = App->physics->CreateChain(0, 0, football3, 30); 
+	football_3 = App->physics->CreateChain(0, 0, football3, 30, 1.0f); 
 }
