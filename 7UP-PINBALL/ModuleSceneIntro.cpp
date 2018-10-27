@@ -24,9 +24,9 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	ball = App->textures->Load("pinball/redball.png"); 
-	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
-	map = App->textures->Load("pinball/pinball.png"); 
+	ball = App->textures->Load("Images/redball.png"); 
+	bonus_fx = App->audio->LoadFx("Audio/bonus.wav");
+	map = App->textures->Load("Images/pinball.png"); 
 
 	DrawColliders();
 
@@ -56,7 +56,7 @@ update_status ModuleSceneIntro::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
-		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50, 0));
+		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50, 0, b2_dynamicBody));
 	}
 
 
@@ -145,8 +145,8 @@ void ModuleSceneIntro::DrawColliders()
 	184, 536,
 	195, 541,
 	201, 542,
-	201, 549,
-	283, 549,
+	201, 570,
+	283, 570,
 	283, 543,
 	305, 534,
 	329, 519,
@@ -345,55 +345,63 @@ void ModuleSceneIntro::DrawColliders()
 	};
 	bottom_right_1 = App->physics->CreateChain(0, 0, bottom_right1, 28); 
 
-	int bottom_right2[44] = {
-	318, 473,
-	324, 467,
-	329, 461,
-	334, 451,
-	340, 439,
-	343, 425,
-	344, 413,
-	347, 410,
-	351, 410,
-	353, 413,
-	353, 420,
-	352, 442,
-	348, 456,
-	341, 472,
-	330, 487,
-	319, 497,
-	312, 499,
-	306, 496,
-	304, 491,
-	304, 486,
-	307, 482,
-	317, 473
+	int bottom_right2[52] = {
+		347, 410,
+		344, 415,
+		343, 423,
+		341, 431,
+		339, 440,
+		335, 450,
+		330, 459,
+		324, 467,
+		314, 478,
+		306, 483,
+		304, 489,
+		313, 484,
+		318, 489,
+		313, 499,
+		318, 498,
+		325, 492,
+		332, 483,
+		338, 475,
+		344, 464,
+		347, 455,
+		350, 444,
+		352, 431,
+		353, 420,
+		353, 415,
+		352, 411,
+		348, 410
 	};
-	bottom_right_2 = App->physics->CreateChain(0, 0, bottom_right2, 44); 
+	bottom_right_2 = App->physics->CreateChain(0, 0, bottom_right2, 52); 
 
-	int bottom_left1[40] = {
-	170, 498,
-	176, 497,
-	178, 492,
-	178, 485,
-	172, 479,
-	159, 467,
-	149, 451,
-	142, 434,
-	140, 422,
-	139, 413,
-	135, 409,
-	131, 412,
-	131, 422,
-	131, 435,
-	133, 449,
-	139, 466,
-	146, 478,
-	155, 489,
-	163, 497,
-	171, 498
+	int bottom_left1[48] = {
+		133, 410,
+		131, 414,
+		131, 419,
+		132, 434,
+		137, 460,
+		144, 475,
+		152, 486,
+		159, 493,
+		164, 497,
+		170, 498,
+		163, 488,
+		167, 484,
+		178, 486,
+		175, 482,
+		166, 475,
+		159, 467,
+		152, 457,
+		147, 447,
+		143, 437,
+		141, 429,
+		139, 420,
+		139, 413,
+		137, 410,
+		135, 410
 	};
-	bottom_left_1 = App->physics->CreateChain(0, 0, bottom_left1, 40); 
+	bottom_left_1 = App->physics->CreateChain(0, 0, bottom_left1, 48); 
 
 	int bottom_left2[24] = {
 	166, 418,
@@ -424,20 +432,44 @@ void ModuleSceneIntro::DrawColliders()
 	};
 	ball_corridor_1 = App->physics->CreateChain(0, 0, ball_corridor1, 18); 
 
-	int ball_corridor2[22] = {
-	418, 318,
-	418, 465,
-	460, 465,
-	465, 463,
-	468, 460,
-	470, 455,
-	470, 350,
-	468, 344,
-	462, 340,
-	449, 340,
-	448, 344
+	int ball_corridor2[70] = {
+		406, 136,
+		418, 144,
+		426, 155,
+		431, 170,
+		432, 186,
+		428, 204,
+		423, 224,
+		419, 248,
+		417, 272,
+		417, 304,
+		418, 570,
+		440, 570,
+		440, 467,
+		460, 466,
+		466, 463,
+		470, 458,
+		471, 453,
+		471, 347,
+		468, 343,
+		463, 340,
+		456, 339,
+		443, 339,
+		442, 276,
+		443, 246,
+		445, 230,
+		450, 208,
+		454, 192,
+		456, 172,
+		452, 152,
+		443, 134,
+		430, 120,
+		412, 110,
+		390, 107,
+		375, 109,
+		366, 112
 	};
-	ball_corridor_2 = App->physics->CreateChain(0, 0, ball_corridor2, 22); 
+	ball_corridor_2 = App->physics->CreateChain(0, 0, ball_corridor2, 70);
 
 	int football1[30] = {
 	190, 237,
@@ -456,7 +488,7 @@ void ModuleSceneIntro::DrawColliders()
 	193, 241,
 	189, 238
 	};
-	football_1 = App->physics->CreateChain(0, 0, football1, 30); 
+	football_1 = App->physics->CreateChain(0, 0, football1, 30, 1.0f); 
 
 	int football2[30] = {
 	233, 195,
@@ -475,7 +507,7 @@ void ModuleSceneIntro::DrawColliders()
 	235, 191,
 	232, 194
 	};
-	football_2 = App->physics->CreateChain(0, 0, football2, 30); 
+	football_2 = App->physics->CreateChain(0, 0, football2, 30, 1.0f); 
 
 	int football3[30] = {
 	277, 226,
@@ -494,5 +526,5 @@ void ModuleSceneIntro::DrawColliders()
 	279, 224,
 	276, 226
 	};
-	football_3 = App->physics->CreateChain(0, 0, football3, 30); 
+	football_3 = App->physics->CreateChain(0, 0, football3, 30, 1.0f); 
 }
