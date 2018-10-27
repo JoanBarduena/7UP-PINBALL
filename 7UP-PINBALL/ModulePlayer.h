@@ -15,6 +15,7 @@ public:
 	update_status Update();
 	bool CleanUp();
 	void LoadKickers(); 
+	void Launcher(); 
 
 public:
 	//Textures
@@ -33,13 +34,11 @@ public:
 	PhysBody* pivot_right;
 	b2RevoluteJoint* joint_right;
 
-	//Animations
-
 private:
 
-	/*PhysBody* launcher;
+	PhysBody* launcher;
 	PhysBody* launcher_pivot;
-	b2PrismaticJoint* jointLauncher;*/
+	b2PrismaticJoint* jointLauncher;
 
 	uint kicker_fx;
 

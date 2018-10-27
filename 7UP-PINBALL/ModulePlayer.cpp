@@ -5,6 +5,7 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "ModuleAudio.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -18,9 +19,14 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	LOG("Loading player");
-	kickers = App->textures->Load("pinball/kicker.png");
+	//Load kickers
+	kickers = App->textures->Load("Images/kicker.png");
+	//Load audio
+	kicker_fx = App->audio->LoadFx("Audio/kicker.wav"); 
 
+	//Load of functions
 	LoadKickers(); 
+	Launcher(); 
 
 	return true;
 }
@@ -39,10 +45,10 @@ update_status ModulePlayer::Update()
 {
 
 	// KICKERS INPUTS
-
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 	{
 		joint_left->EnableMotor(true);
+		App->audio->PlayFx(kicker_fx); 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
 	{
@@ -52,25 +58,12 @@ update_status ModulePlayer::Update()
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
 		joint_right->EnableMotor(true);
+		App->audio->PlayFx(kicker_fx);
 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
 	{
 		joint_right->EnableMotor(false);
-	}
-
-	// BALL LAUNCHER INPUTS
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		//jointLauncher->EnableMotor(true);
-		//current_animation = &launcher_anim_launching;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
-	{
-		//jointLauncher->EnableMotor(false);
-		//current_animation = &launcher_anim_idle;
 	}
 
 	int x, y;
@@ -82,6 +75,22 @@ update_status ModulePlayer::Update()
 	//RIGHT KICKER
 	kicker_right->GetPosition(x, y);
 	App->renderer->Blit(kickers, x, y, NULL, 1.0f, kicker_right->GetRotation() + 180);
+
+	//-------------------------------------------------------------------------------------
+
+	//LAUNCHER INPUTS 
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		jointLauncher->EnableMotor(true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
+	{
+		jointLauncher->EnableMotor(false);
+	}
+	launcher->GetPosition(x, y);
+	//App->renderer->Blit(launcher_tex, x - 3, y, &(current_animation->GetCurrentFrame()));
+
 	return UPDATE_CONTINUE;
 }
 
@@ -141,8 +150,40 @@ void ModulePlayer::LoadKickers()
 
 	joint_right = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
 
-	// ---------------------------------------------------------------------------------
+}
 
+void ModulePlayer::Launcher()
+{
+
+	b2RevoluteJointDef revoluteJointDef;
+
+	//LAUNCHER POSITIONS OF PUSHING RECTANGLE AND STATIC RECTANGLE
+	launcher = App->physics->CreateRectangle(429, 508, 20, 80, 0, b2_dynamicBody);
+	launcher_pivot = App->physics->CreateRectangle(429, 508, 20, 20, 0, b2_staticBody);
+
+	b2PrismaticJointDef prismaticJointDef;
+
+	prismaticJointDef.bodyA = launcher->body;
+	prismaticJointDef.bodyB = launcher_pivot->body;
+
+	prismaticJointDef.localAnchorA.Set(0, 0);
+	prismaticJointDef.localAnchorB.Set(0, 0);
+	prismaticJointDef.collideConnected = false;
+
+	prismaticJointDef.localAxisA.Set(0, 1);
+
+
+	prismaticJointDef.enableLimit = true;
+	prismaticJointDef.lowerTranslation = 0;
+	prismaticJointDef.upperTranslation = PIXEL_TO_METERS(50);
+
+	prismaticJointDef.enableMotor = false;
+	prismaticJointDef.maxMotorForce = 400;
+	prismaticJointDef.motorSpeed = 5000;
+
+	jointLauncher = (b2PrismaticJoint*)App->physics->world->CreateJoint(&prismaticJointDef);
+
+	//ANIMATIONS SOON...
 
 }
 

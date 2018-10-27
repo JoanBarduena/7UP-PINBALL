@@ -23,9 +23,9 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	ball = App->textures->Load("pinball/redball.png"); 
-	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
-	map = App->textures->Load("pinball/pinball.png"); 
+	ball = App->textures->Load("Images/redball.png"); 
+	bonus_fx = App->audio->LoadFx("Audio/bonus.wav");
+	map = App->textures->Load("Images/pinball.png"); 
 
 	DrawColliders();
 
@@ -415,20 +415,44 @@ void ModuleSceneIntro::DrawColliders()
 	};
 	ball_corridor_1 = App->physics->CreateChain(0, 0, ball_corridor1, 18); 
 
-	int ball_corridor2[22] = {
-	418, 318,
-	418, 465,
-	460, 465,
-	465, 463,
-	468, 460,
-	470, 455,
-	470, 350,
-	468, 344,
-	462, 340,
-	449, 340,
-	448, 344
+	int ball_corridor2[70] = {
+		406, 136,
+		418, 144,
+		426, 155,
+		431, 170,
+		432, 186,
+		428, 204,
+		423, 224,
+		419, 248,
+		417, 272,
+		417, 304,
+		418, 570,
+		440, 570,
+		440, 467,
+		460, 466,
+		466, 463,
+		470, 458,
+		471, 453,
+		471, 347,
+		468, 343,
+		463, 340,
+		456, 339,
+		443, 339,
+		442, 276,
+		443, 246,
+		445, 230,
+		450, 208,
+		454, 192,
+		456, 172,
+		452, 152,
+		443, 134,
+		430, 120,
+		412, 110,
+		390, 107,
+		375, 109,
+		366, 112
 	};
-	ball_corridor_2 = App->physics->CreateChain(0, 0, ball_corridor2, 22); 
+	ball_corridor_2 = App->physics->CreateChain(0, 0, ball_corridor2, 70);
 
 	int football1[30] = {
 	190, 237,
