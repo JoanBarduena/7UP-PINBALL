@@ -49,7 +49,7 @@ update_status ModuleSceneIntro::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
-		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 25));
+		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 8));
 		circles.getLast()->data->listener = this;
 	}
 
@@ -146,6 +146,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 void ModuleSceneIntro::DrawColliders()
 {
+
 	int Map[150] = {
 	41, 201,
 	60, 228,
@@ -463,54 +464,60 @@ void ModuleSceneIntro::DrawColliders()
 	};
 	ball_corridor_2 = App->physics->CreateChain(0, 0, ball_corridor2, 22); 
 
-	int football1[26] = {
-	196, 222,
-	204, 222,
-	209, 224,
-	212, 228,
-	212, 237,
-	210, 241,
-	205, 244,
-	196, 244,
-	191, 241,
-	189, 236,
-	189, 229,
-	191, 225,
-	195, 222
+	int football1[30] = {
+	190, 237,
+	190, 229,
+	193, 225,
+	195, 223,
+	198, 222,
+	201, 222,
+	204, 223,
+	208, 225,
+	210, 229,
+	210, 236,
+	208, 239,
+	204, 243,
+	198, 243,
+	193, 241,
+	190, 238
 	};
-	football_1 = App->physics->CreateChain(0, 0, football1, 26); 
+	football_1 = App->physics->CreateChain(0, 0, football1, 30); 
 
-	int football2[26] = {
-	239, 187,
-	246, 187,
-	251, 189,
-	254, 194,
-	254, 201,
-	252, 206,
-	247, 209,
-	239, 209,
-	235, 207,
-	232, 203,
-	232, 195,
-	234, 191,
-	239, 187
+	int football2[30] = {
+	233, 195,
+	233, 201,
+	235, 204,
+	239, 207,
+	247, 207,
+	250, 205,
+	252, 201,
+	252, 195,
+	250, 191,
+	248, 189,
+	245, 188,
+	241, 188,
+	238, 189,
+	235, 191,
+	233, 194
 	};
-	football_2 = App->physics->CreateChain(0, 0, football2, 26); 
+	football_2 = App->physics->CreateChain(0, 0, football2, 30); 
 
-	int football3[26] = {
-	281, 222,
-	289, 222,
-	293, 224,
-	296, 228,
-	296, 236,
-	294, 241,
-	290, 244,
-	281, 244,
-	277, 242,
-	274, 238,
-	274, 229,
-	276, 225,
-	281, 222
+	int football3[30] = {
+	277, 226,
+	275, 230,
+	275, 236,
+	277, 240,
+	282, 242,
+	288, 242,
+	292, 240,
+	294, 236,
+	294, 229,
+	292, 225,
+	289, 223,
+	286, 222,
+	282, 222,
+	279, 224,
+	277, 226
 	};
-	football_3 = App->physics->CreateChain(0, 0, football3, 26); 
+	football_3 = App->physics->CreateChain(0, 0, football3, 30); 
 }
