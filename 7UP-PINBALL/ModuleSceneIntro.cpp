@@ -6,6 +6,7 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+#include "ModuleFonts.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -29,6 +30,8 @@ bool ModuleSceneIntro::Start()
 
 	DrawColliders();
 
+	font_score = App->fonts->Load("pinball/7UP_SCORE_FONT.png", "0123456789", 1);
+	score = 1000000000;
 	return ret;
 }
 
@@ -93,6 +96,20 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
 		c = c->next;
 	}
+
+	sprintf_s(score_text, 13, "%12d", score);
+	App->fonts->BlitText(110, 34, font_score, score_text);
+
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
+		score += 1000;
+
+	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)
+		score += 100000;
+
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_REPEAT)
+		score += 100000000;
+	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_REPEAT)
+		score = 0;
 
 	return UPDATE_CONTINUE;
 }
