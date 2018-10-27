@@ -44,7 +44,7 @@ public:
 	PhysBody* ball_corridor_1; 
 	PhysBody* ball_corridor_2; 
 
-	SDL_Texture* circle;
+	SDL_Texture* ball;
 	SDL_Texture* box;
 	SDL_Texture* rick;
 	SDL_Texture* map; 
