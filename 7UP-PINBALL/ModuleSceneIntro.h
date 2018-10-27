@@ -49,4 +49,9 @@ public:
 	SDL_Texture* rick;
 	SDL_Texture* map; 
 	uint bonus_fx;
+
+	//Score system
+	int score;				//score
+	int font_score=-1;		//Load the score here
+	char score_text[13];	
 };
