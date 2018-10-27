@@ -24,8 +24,6 @@ bool ModuleSceneIntro::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	ball = App->textures->Load("pinball/redball.png"); 
-	box = App->textures->Load("pinball/crate.png");
-	rick = App->textures->Load("pinball/rick_head.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 	map = App->textures->Load("pinball/pinball.png"); 
 
@@ -58,46 +56,6 @@ update_status ModuleSceneIntro::Update()
 		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-	{
-		// Pivot 0, 0
-		int rick_head[64] = {
-			14, 36,
-			42, 40,
-			40, 0,
-			75, 30,
-			88, 4,
-			94, 39,
-			111, 36,
-			104, 58,
-			107, 62,
-			117, 67,
-			109, 73,
-			110, 85,
-			106, 91,
-			109, 99,
-			103, 104,
-			100, 115,
-			106, 121,
-			103, 125,
-			98, 126,
-			95, 137,
-			83, 147,
-			67, 147,
-			53, 140,
-			46, 132,
-			34, 136,
-			38, 126,
-			23, 123,
-			30, 114,
-			10, 102,
-			29, 90,
-			0, 75,
-			30, 62
-		};
-
-		ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64));
-	}
 
 	// Prepare for raycast ------------------------------------------------------
 	
@@ -222,7 +180,7 @@ void ModuleSceneIntro::DrawColliders()
 	36, 152,
 	33, 171,
 	34, 186,
-	41, 201
+	40, 201
 	};
 	map_ = App->physics->CreateChain(0, 0, Map, 150); 
 
@@ -241,7 +199,7 @@ void ModuleSceneIntro::DrawColliders()
 	109, 227,
 	100, 228,
 	91, 229,
-	91, 229
+	90, 229
 	};
 	top_left_1 = App->physics->CreateChain(0, 0, top_left1, 30); 
 
@@ -272,7 +230,7 @@ void ModuleSceneIntro::DrawColliders()
 	184, 136,
 	175, 132,
 	162, 134,
-	142, 147
+	141, 147
 	};
 	top_left_3 = App->physics->CreateChain(0, 0, top_left3, 24); 
 
@@ -285,7 +243,7 @@ void ModuleSceneIntro::DrawColliders()
 	222, 152,
 	219, 148,
 	219, 125,
-	222, 121
+	221, 121
 	};
 	middle_top_1 = App->physics->CreateChain(0, 0, middle_top1, 18); 
 
@@ -298,7 +256,7 @@ void ModuleSceneIntro::DrawColliders()
 	260, 152,
 	256, 148,
 	256, 125,
-	259, 121
+	258, 121
 	};
 	middle_top_2 = App->physics->CreateChain(0, 0, middle_top2, 18); 
 
@@ -320,7 +278,7 @@ void ModuleSceneIntro::DrawColliders()
 	225, 323,
 	217, 318,
 	208, 308,
-	205, 295
+	204, 295
 	};
 	middle_ = App->physics->CreateChain(0, 0, middle, 36); 
 
@@ -335,7 +293,7 @@ void ModuleSceneIntro::DrawColliders()
 	332, 170,
 	333, 160,
 	334, 151,
-	337, 142
+	336, 142
 	};
 	top_right_1 = App->physics->CreateChain(0, 0, top_right1, 22); 
 
@@ -348,7 +306,7 @@ void ModuleSceneIntro::DrawColliders()
 	339, 239,
 	336, 235,
 	337, 227,
-	344, 211
+	343, 211
 	};
 	top_right_2 = App->physics->CreateChain(0, 0, top_right2, 18); 
 
@@ -366,7 +324,7 @@ void ModuleSceneIntro::DrawColliders()
 	301, 463,
 	296, 466,
 	291, 464,
-	290, 459
+	291, 459
 	};
 	bottom_right_1 = App->physics->CreateChain(0, 0, bottom_right1, 28); 
 
@@ -392,7 +350,7 @@ void ModuleSceneIntro::DrawColliders()
 	304, 491,
 	304, 486,
 	307, 482,
-	318, 473
+	317, 473
 	};
 	bottom_right_2 = App->physics->CreateChain(0, 0, bottom_right2, 44); 
 
@@ -416,7 +374,7 @@ void ModuleSceneIntro::DrawColliders()
 	146, 478,
 	155, 489,
 	163, 497,
-	170, 498
+	171, 498
 	};
 	bottom_left_1 = App->physics->CreateChain(0, 0, bottom_left1, 40); 
 
@@ -432,7 +390,7 @@ void ModuleSceneIntro::DrawColliders()
 	173, 449,
 	168, 440,
 	166, 430,
-	166, 418
+	165, 418
 	};
 	bottom_left_2 = App->physics->CreateChain(0, 0, bottom_left2, 24); 
 
@@ -445,7 +403,7 @@ void ModuleSceneIntro::DrawColliders()
 	442, 441,
 	447, 441,
 	450, 437,
-	450, 345
+	451, 345
 	};
 	ball_corridor_1 = App->physics->CreateChain(0, 0, ball_corridor1, 18); 
 
@@ -460,7 +418,7 @@ void ModuleSceneIntro::DrawColliders()
 	468, 344,
 	462, 340,
 	449, 340,
-	449, 344
+	448, 344
 	};
 	ball_corridor_2 = App->physics->CreateChain(0, 0, ball_corridor2, 22); 
 
@@ -479,7 +437,7 @@ void ModuleSceneIntro::DrawColliders()
 	204, 243,
 	198, 243,
 	193, 241,
-	190, 238
+	189, 238
 	};
 	football_1 = App->physics->CreateChain(0, 0, football1, 30); 
 
@@ -498,7 +456,7 @@ void ModuleSceneIntro::DrawColliders()
 	241, 188,
 	238, 189,
 	235, 191,
-	233, 194
+	232, 194
 	};
 	football_2 = App->physics->CreateChain(0, 0, football2, 30); 
 
@@ -517,7 +475,7 @@ void ModuleSceneIntro::DrawColliders()
 	286, 222,
 	282, 222,
 	279, 224,
-	277, 226
+	276, 226
 	};
 	football_3 = App->physics->CreateChain(0, 0, football3, 30); 
 }

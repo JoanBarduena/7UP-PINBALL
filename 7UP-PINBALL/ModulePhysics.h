@@ -50,7 +50,7 @@ public:
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 
-private:
+public:
 
 	bool debug;
 	b2World* world;
