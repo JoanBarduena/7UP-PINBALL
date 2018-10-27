@@ -14,7 +14,7 @@ public:
 	bool Start();
 	update_status Update();
 	bool CleanUp();
-	//void CreateFlippers(); 
+	void LoadKickers(); 
 
 public:
 	//Textures
@@ -37,14 +37,10 @@ public:
 
 private:
 
-	PhysBody* launcher;
+	/*PhysBody* launcher;
 	PhysBody* launcher_pivot;
-	b2PrismaticJoint* jointLauncher;
+	b2PrismaticJoint* jointLauncher;*/
 
-	uint flipper_fx;
+	uint kicker_fx;
 
-	PhysBody* ball;
-	bool must_destroy_ball = false;
-
-	//p2SString* tmp = new p2SString("[7UP PINBALL] | SCORE: %d", score);
 };

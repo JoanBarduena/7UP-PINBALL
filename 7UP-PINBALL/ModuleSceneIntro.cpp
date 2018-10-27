@@ -53,7 +53,7 @@ update_status ModuleSceneIntro::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
-		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50, 0));
+		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50, 0, b2_dynamicBody));
 	}
 
 
@@ -328,55 +328,63 @@ void ModuleSceneIntro::DrawColliders()
 	};
 	bottom_right_1 = App->physics->CreateChain(0, 0, bottom_right1, 28); 
 
-	int bottom_right2[44] = {
-	318, 473,
-	324, 467,
-	329, 461,
-	334, 451,
-	340, 439,
-	343, 425,
-	344, 413,
-	347, 410,
-	351, 410,
-	353, 413,
-	353, 420,
-	352, 442,
-	348, 456,
-	341, 472,
-	330, 487,
-	319, 497,
-	312, 499,
-	306, 496,
-	304, 491,
-	304, 486,
-	307, 482,
-	317, 473
+	int bottom_right2[52] = {
+		347, 410,
+		344, 415,
+		343, 423,
+		341, 431,
+		339, 440,
+		335, 450,
+		330, 459,
+		324, 467,
+		314, 478,
+		306, 483,
+		304, 489,
+		313, 484,
+		318, 489,
+		313, 499,
+		318, 498,
+		325, 492,
+		332, 483,
+		338, 475,
+		344, 464,
+		347, 455,
+		350, 444,
+		352, 431,
+		353, 420,
+		353, 415,
+		352, 411,
+		348, 410
 	};
-	bottom_right_2 = App->physics->CreateChain(0, 0, bottom_right2, 44); 
+	bottom_right_2 = App->physics->CreateChain(0, 0, bottom_right2, 52); 
 
-	int bottom_left1[40] = {
-	170, 498,
-	176, 497,
-	178, 492,
-	178, 485,
-	172, 479,
-	159, 467,
-	149, 451,
-	142, 434,
-	140, 422,
-	139, 413,
-	135, 409,
-	131, 412,
-	131, 422,
-	131, 435,
-	133, 449,
-	139, 466,
-	146, 478,
-	155, 489,
-	163, 497,
-	171, 498
+	int bottom_left1[48] = {
+		133, 410,
+		131, 414,
+		131, 419,
+		132, 434,
+		137, 460,
+		144, 475,
+		152, 486,
+		159, 493,
+		164, 497,
+		170, 498,
+		163, 488,
+		167, 484,
+		178, 486,
+		175, 482,
+		166, 475,
+		159, 467,
+		152, 457,
+		147, 447,
+		143, 437,
+		141, 429,
+		139, 420,
+		139, 413,
+		137, 410,
+		135, 410
 	};
-	bottom_left_1 = App->physics->CreateChain(0, 0, bottom_left1, 40); 
+	bottom_left_1 = App->physics->CreateChain(0, 0, bottom_left1, 48); 
 
 	int bottom_left2[24] = {
 	166, 418,
