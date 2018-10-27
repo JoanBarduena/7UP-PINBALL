@@ -100,7 +100,7 @@ void ModulePlayer::LoadKickers()
 
 	b2RevoluteJointDef revoluteJointDef;
 
-	kicker_left = App->physics->CreateRectangle(174, 492, 48, 10, 20 * DEGTORAD, b2_dynamicBody);
+	kicker_left = App->physics->CreateRectangle(174, 492, 58, 13, 20 * DEGTORAD, b2_dynamicBody);
 	pivot_left = App->physics->CreateCircle(174, 492, 6, b2_staticBody);
 	kicker_left->body->SetGravityScale(30.0f);
 
@@ -126,7 +126,7 @@ void ModulePlayer::LoadKickers()
 
 	// RIGHT KICKER
 
-	kicker_right = App->physics->CreateRectangle(310, 492, 48, 10, -32 * DEGTORAD, b2_dynamicBody); //RECTANGLE COORDENATES
+	kicker_right = App->physics->CreateRectangle(310, 492, 58, 13, -32 * DEGTORAD, b2_dynamicBody); //RECTANGLE COORDENATES
 	pivot_right = App->physics->CreateCircle(310, 492, 6, b2_staticBody); //CIRCLE COORDENATES
 	kicker_right->body->SetGravityScale(30.0f);
 
