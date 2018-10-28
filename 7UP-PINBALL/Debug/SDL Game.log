@@ -1,9 +1,9 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: El directorio intermedio (Debug\) contiene archivos compartidos de otro proyecto (o.vcxproj). Esto puede dar lugar a un comportamiento incorrecto de limpieza y recompilación.
-  ModulePhysics.cpp
-c:\users\badli\documents\github\7up-pinball\7up-pinball\modulephysics.cpp(103): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\badli\documents\github\7up-pinball\7up-pinball\modulephysics.cpp(104): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\badli\documents\github\7up-pinball\7up-pinball\modulephysics.cpp(147): warning C4018: '<': no coinciden signed/unsigned
-c:\users\badli\documents\github\7up-pinball\7up-pinball\modulephysics.cpp(366): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\badli\documents\github\7up-pinball\7up-pinball\modulephysics.cpp(367): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\badli\documents\github\7up-pinball\7up-pinball\modulephysics.cpp(373): warning C4244: 'return': conversión de 'float32' a 'int'; posible pérdida de datos
-  SDL Game.vcxproj -> C:\Users\badli\Documents\GitHub\7UP-PINBALL\7UP-PINBALL\Debug\7UpPinball.exe
+  Application.cpp
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xlocale(319): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+  ModulePlayer.cpp
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xlocale(319): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+  ModuleSceneIntro.cpp
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xlocale(319): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+  Generando código...
+  SDL Game.vcxproj -> C:\Users\joanm\Documents\GitHub\7UP-PINBALL\7UP-PINBALL\Debug\7UpPinball.exe
