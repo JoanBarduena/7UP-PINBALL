@@ -4,6 +4,7 @@
 #include "p2Point.h"
 #include "Globals.h"
 #include "Animation.h"
+#include "ModuleAudio.h"
 
 class PhysBody;
 
@@ -16,9 +17,10 @@ public:
 	bool Start();
 	update_status Update();
 	bool CleanUp();
-	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
+	//void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void DrawColliders();
 	void DrawLights();
+	void IncreaseScore(int points);
 
 public:
 
@@ -54,7 +56,8 @@ public:
 	//Score system
 	int score;				//score
 	int font_score=-1;		//Load the score here
-	char score_text[13];	
+	char score_text[13];
+	int combo;				//This will multiply the points income
 
 	//Light Animations
 	SDL_Texture* lights_texture;
@@ -63,5 +66,8 @@ public:
 	Animation top_left_lights;
 	Animation right_lights;
 	Animation top_right_lights;
+
+	//Music
+	Mix_Music* music;
 
 };

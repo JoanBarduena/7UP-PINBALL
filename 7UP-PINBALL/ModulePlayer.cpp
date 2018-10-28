@@ -7,6 +7,7 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModuleWindow.h"
+#include "ModuleSceneIntro.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -29,6 +30,7 @@ bool ModulePlayer::Start()
 
 	//Load audio
 	kicker_fx = App->audio->LoadFx("Audio/kicker.wav"); 
+	combo_fx = App->audio->LoadFx("Audio/Combo.wav");
 
 	//Load sensor
 	dead_sensor = App->physics->CreateRectangleSensor(243, 550, 80, 20, b2_staticBody); 
@@ -75,12 +77,29 @@ void ModulePlayer::Ball()
 
 void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	if (bodyB == dead_sensor)
+	if (bodyB == dead_sensor && bodyA==ball )
 	{
 		ball_animation = &ball_lost_anim;
 		ball_counter = 0; 
 		is_dead = true; 
 		tries -= 1; 
+		App->scene_intro->combo = 1;		//Reset the combo
+	}
+
+	else {
+		App->scene_intro->IncreaseScore(1);
+
+		if (bodyA == App->scene_intro->football_1 ||
+			bodyA == App->scene_intro->football_2 ||
+			bodyA == App->scene_intro->football_3 ||
+			bodyB == App->scene_intro->football_1 ||
+			bodyB == App->scene_intro->football_2 ||
+			bodyB == App->scene_intro->football_3) {
+
+			App->scene_intro->combo += 10;
+			App->audio->PlayFx(combo_fx);
+		}
+
 	}
 }
 
@@ -127,16 +146,18 @@ update_status ModulePlayer::Update()
 	{
 		jointLauncher->EnableMotor(true);
 		current_animation = &launching_animation;
+		App->audio->PlayFx(kicker_fx);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 	{
 		jointLauncher->EnableMotor(false);
 		current_animation = &launcher_animation_static; 
+		
 	}
 	App->renderer->Blit(launcher_tx, 417, 433, &(current_animation->GetCurrentFrame()));
 
-	// Ball texture setting 
+	// Ball texture setting
 	ball->GetPosition(x, y);
 	App->renderer->Blit(ball_tx, x, y, NULL, 1.0f, ball->GetRotation());
 
@@ -214,6 +235,7 @@ void ModulePlayer::LoadKickers()
 	joint_right = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
 
 }
+
 
 void ModulePlayer::Launcher()
 {
