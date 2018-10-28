@@ -30,8 +30,8 @@ bool ModuleSceneIntro::Start()
 
 	DrawColliders();
 
-	font_score = App->fonts->Load("pinball/7UP_SCORE_FONT.png", "0123456789", 1);
-	score = 1000000000;
+	font_score = App->fonts->Load("Images/7UP_SCORE_FONT.png", "0123456789", 1);
+	score = 0;
 	return ret;
 }
 
