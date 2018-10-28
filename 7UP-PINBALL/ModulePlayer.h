@@ -12,10 +12,12 @@ public:
 	ModulePlayer(Application* app, bool start_enabled = true);
 	virtual ~ModulePlayer();
 
+	//Functions
 	bool Start();
 	update_status Update();
 	bool CleanUp();
 	void Ball(); 
+	void Teleported_Ball(); 
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB); 
 	void LoadKickers(); 
 	void Launcher(); 
@@ -42,9 +44,12 @@ public:
 
 	//Sensors
 	PhysBody* dead_sensor; 
+	PhysBody* lock_sensor;
+	PhysBody* teleport_sensor;
 	
 	//bools
 	bool is_dead = false; 
+	bool is_teleported = false; 
 
 private:
 
@@ -64,6 +69,8 @@ private:
 	PhysBody* launcher_pivot;
 	b2PrismaticJoint* jointLauncher;
 
+	//sfx
 	uint kicker_fx;
+	uint combo_fx;
 
 };

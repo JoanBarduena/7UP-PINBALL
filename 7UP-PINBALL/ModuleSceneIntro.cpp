@@ -7,6 +7,7 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "ModuleFonts.h"
+#include "ModulePlayer.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -20,7 +21,7 @@ ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Modul
 		middle_lights.PushBack({32*i,0,32,181});		
 	}
 
-	for (int i = 0; i < 4; ++i) {						//light off
+	for (int i = 0; i < 4; ++i) {						//lights off
 		top_right_lights.PushBack({ 213,274,71,41 });
 		top_left_lights.PushBack({271, 240, 57, 34 });
 	}
@@ -32,7 +33,7 @@ ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Modul
 		right_lights.PushBack({37*i,315,37,54});
 	}
 
-	for (int i = 0; i < 4; ++i) {						//light off
+	for (int i = 0; i < 4; ++i) {						//lights off
 		right_lights.PushBack({ 111,315,37,54 });
 	}
 
@@ -59,19 +60,23 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	App->audio->PlayMusic("Audio/Pinball_Music.ogg");							//Play music
+
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	ball = App->textures->Load("Images/redball.png"); 
 	bonus_fx = App->audio->LoadFx("Audio/bonus.wav");
 	map = App->textures->Load("Images/Pinball2.0.png"); 
 
-
 	DrawColliders();
 
 	font_score = App->fonts->Load("Images/7UP_SCORE_FONT.png", "0123456789", 1);//Load Font texture
 
-	lights_texture = App->textures->Load("Images/Lights Texture.png");
+	lights_texture = App->textures->Load("Images/Lights Texture.png");			//Load lights texture
 
+	
+
+	combo = 1;
 	score = 0;
 	return ret;
 }
@@ -87,19 +92,21 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	
+
 	App->renderer->Blit(map, 0, 0, NULL); 
+	DrawLights();
 
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 9, b2_dynamicBody));
-		circles.getLast()->data->listener = this;
+		circles.getLast()->data->listener = App->player;
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
 		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50, 0, b2_dynamicBody));
 	}
-
 
 	// Prepare for raycast ------------------------------------------------------
 	
@@ -118,30 +125,29 @@ update_status ModuleSceneIntro::Update()
 		c = c->next;
 	}
 
+	
+
 	//SCORE
 	sprintf_s(score_text, 13, "%12d", score);
 	App->fonts->BlitText(110, 34, font_score, score_text);
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
-		score += 1000;
+		IncreaseScore(10);
 
-	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)
-		score += 100000;
+	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+		combo *= 10;
 
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_REPEAT)
 		score += 100000000;
+
 	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_REPEAT)
 		score = 0;
 
-	DrawLights();
+	
 
 	return UPDATE_CONTINUE;
 }
 
-void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
-{
-	App->audio->PlayFx(bonus_fx);
-}
 
 void ModuleSceneIntro::DrawLights() {
 
@@ -150,6 +156,10 @@ void ModuleSceneIntro::DrawLights() {
 	App->renderer->Blit(lights_texture, 285, 102, &top_right_lights.GetCurrentFrame());	//Top right lights
 	App->renderer->Blit(lights_texture, 351, 192, &right_lights.GetCurrentFrame());		//Right lights
 	App->renderer->Blit(lights_texture, 226, 328, &middle_lights.GetCurrentFrame());	//Middle lights
+}
+
+void ModuleSceneIntro::IncreaseScore(int points) {
+	score += points * combo;
 }
 
 void ModuleSceneIntro::DrawColliders()
@@ -581,5 +591,25 @@ void ModuleSceneIntro::DrawColliders()
 	276, 226
 	};
 	football_3 = App->physics->CreateChain(0, 0, football3, 30, 1.0f); 
+
+	int football4[32] = {
+		86, 161,
+		90, 161,
+		95, 162,
+		98, 165,
+		100, 169,
+		100, 174,
+		99, 179,
+		95, 182,
+		91, 183,
+		86, 183,
+		81, 181,
+		79, 177,
+		78, 173,
+		78, 167,
+		81, 162,
+		85, 161
+	};
+	football_4 = App->physics->CreateChain(0, 0, football4, 32, 3.0f); 
 }
 
