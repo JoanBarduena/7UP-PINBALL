@@ -6,10 +6,11 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
+#include "ModuleWindow.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	kickers = NULL;
+	ball_tx = kickers_tx = launcher_tx = NULL;
 }
 
 ModulePlayer::~ModulePlayer()
@@ -19,14 +20,34 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	LOG("Loading player");
-	//Load kickers
-	kickers = App->textures->Load("Images/kicker.png");
+
+	//Load textures
+	kickers_tx = App->textures->Load("Images/kicker.png");
+	ball_tx = App->textures->Load("Images/redball.png");
+	launcher_tx = App->textures->Load("Images/LauncherAnimation.png"); 
+	ball_lost_tx = App->textures->Load("Images/BallLost.png"); 
+
 	//Load audio
 	kicker_fx = App->audio->LoadFx("Audio/kicker.wav"); 
 
-	//Load of functions
+	//Load sensor
+	dead_sensor = App->physics->CreateRectangleSensor(243, 550, 80, 20, b2_staticBody); 
+
+	//Ball Lost Pushback
+	ball_lost_anim.PushBack({ 0,9,58,8 });
+	ball_lost_anim.loop = false;
+	ball_lost_anim.speed = 1.0f;
+
+	ball_lost_idle.PushBack({ 0,0,58,8 });
+	ball_lost_idle.loop = false;
+	ball_lost_idle.speed = 1.0f;
+
+	ball_animation = &ball_lost_idle; 
+
+	//Load functions
 	LoadKickers(); 
 	Launcher(); 
+	Ball(); 
 
 	return true;
 }
@@ -35,9 +56,32 @@ bool ModulePlayer::Start()
 bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
-	App->textures->Unload(kickers);
+	App->textures->Unload(kickers_tx);
+	App->textures->Unload(ball_tx); 
+	App->textures->Unload(launcher_tx); 
+	App->textures->Unload(ball_lost_tx); 
 
 	return true;
+}
+
+void ModulePlayer::Ball()
+{
+	if (tries > 0)
+	{
+		ball = App->physics->CreateCircle(455, 350, 9, b2_dynamicBody);
+		ball->listener = this;
+	}
+}
+
+void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
+{
+	if (bodyB == dead_sensor)
+	{
+		ball_animation = &ball_lost_anim;
+		ball_counter = 0; 
+		is_dead = true; 
+		tries -= 1; 
+	}
 }
 
 // Update: draw background
@@ -70,11 +114,11 @@ update_status ModulePlayer::Update()
 
 	//LEFT KICKER
 	kicker_left->GetPosition(x, y);
-	App->renderer->Blit(kickers, x, y, NULL, 1.0f, kicker_left->GetRotation());
+	App->renderer->Blit(kickers_tx, x, y, NULL, 1.0f, kicker_left->GetRotation());
 
 	//RIGHT KICKER
 	kicker_right->GetPosition(x, y);
-	App->renderer->Blit(kickers, x, y, NULL, 1.0f, kicker_right->GetRotation() + 180);
+	App->renderer->Blit(kickers_tx, x, y, NULL, 1.0f, kicker_right->GetRotation() + 180);
 
 	//-------------------------------------------------------------------------------------
 
@@ -82,14 +126,33 @@ update_status ModulePlayer::Update()
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		jointLauncher->EnableMotor(true);
+		current_animation = &launching_animation;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 	{
 		jointLauncher->EnableMotor(false);
+		current_animation = &launcher_animation_static; 
 	}
-	launcher->GetPosition(x, y);
-	//App->renderer->Blit(launcher_tex, x - 3, y, &(current_animation->GetCurrentFrame()));
+	App->renderer->Blit(launcher_tx, 417, 433, &(current_animation->GetCurrentFrame()));
+
+	// Ball texture setting 
+	ball->GetPosition(x, y);
+	App->renderer->Blit(ball_tx, x, y, NULL, 1.0f, ball->GetRotation());
+
+	ball_counter++; 
+	if (ball_counter > 100) { ball_animation = &ball_lost_idle; }
+	
+	//Destroy ball
+	if (is_dead)
+	{
+		App->physics->world->DestroyBody(ball->body);
+		Ball();
+		is_dead = false;
+	}
+
+	//Ball LOST blit
+	App->renderer->Blit(ball_lost_tx, 215, 555, &(ball_animation->GetCurrentFrame()));
 
 	return UPDATE_CONTINUE;
 }
@@ -126,8 +189,8 @@ void ModulePlayer::LoadKickers()
 
 	// RIGHT KICKER
 
-	kicker_right = App->physics->CreateRectangle(310, 492, 58, 13, -32 * DEGTORAD, b2_dynamicBody); //RECTANGLE COORDENATES
-	pivot_right = App->physics->CreateCircle(310, 492, 6, b2_staticBody); //CIRCLE COORDENATES
+	kicker_right = App->physics->CreateRectangle(308, 492, 58, 13, -20 * DEGTORAD, b2_dynamicBody); //RECTANGLE COORDENATES
+	pivot_right = App->physics->CreateCircle(308, 492, 6, b2_staticBody); //CIRCLE COORDENATES
 	kicker_right->body->SetGravityScale(30.0f);
 
 	revoluteJointDef.bodyA = kicker_right->body;
@@ -158,8 +221,8 @@ void ModulePlayer::Launcher()
 	b2RevoluteJointDef revoluteJointDef;
 
 	//LAUNCHER POSITIONS OF PUSHING RECTANGLE AND STATIC RECTANGLE
-	launcher = App->physics->CreateRectangle(429, 508, 20, 80, 0, b2_dynamicBody);
-	launcher_pivot = App->physics->CreateRectangle(429, 508, 20, 20, 0, b2_staticBody);
+	launcher = App->physics->CreateRectangle(429, 508, 15, 80, 0, b2_dynamicBody);
+	launcher_pivot = App->physics->CreateRectangle(429, 508, 15, 20, 0, b2_staticBody);
 
 	b2PrismaticJointDef prismaticJointDef;
 
@@ -179,11 +242,22 @@ void ModulePlayer::Launcher()
 
 	prismaticJointDef.enableMotor = false;
 	prismaticJointDef.maxMotorForce = 400;
-	prismaticJointDef.motorSpeed = 5000;
+	prismaticJointDef.motorSpeed = 3000;
 
 	jointLauncher = (b2PrismaticJoint*)App->physics->world->CreateJoint(&prismaticJointDef);
 
-	//ANIMATIONS SOON...
+	//ANIMATIONS
+
+	launcher_animation_static.PushBack({ 166, 0, 58, 124 });
+	launcher_animation_static.loop = false;
+	launcher_animation_static.speed = 1.0f;
+
+	launching_animation.PushBack({ 77, 0, 49, 118 });
+	launching_animation.PushBack({ 0, 0, 57, 113 });
+	launching_animation.loop = false;
+	launching_animation.speed = 1.0f;
+
+	current_animation = &launcher_animation_static;
 
 }
 

@@ -11,6 +11,43 @@
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	map = ball = box = rick = NULL;
+
+	//Animations
+	//Pushbacks
+	/*In order to have some coordination between some animations,
+	i've added a few of extra pusbacks to some of them in which the light will be off,*/
+	for (int i = 0; i < 9; ++i) {
+		middle_lights.PushBack({32*i,0,32,181});		
+	}
+
+	for (int i = 0; i < 4; ++i) {						//light off
+		top_right_lights.PushBack({ 213,274,71,41 });
+		top_left_lights.PushBack({271, 240, 57, 34 });
+	}
+
+	for (int i = 0; i < 3; ++i) {
+		left_lights.PushBack({ 54 * i,181,54,59 });
+		top_left_lights.PushBack({57*i, 240, 57, 34});
+		top_right_lights.PushBack({71*i,274,71,41});
+		right_lights.PushBack({37*i,315,37,54});
+	}
+
+	for (int i = 0; i < 4; ++i) {						//light off
+		right_lights.PushBack({ 111,315,37,54 });
+	}
+
+	//Loops
+	middle_lights.loop = true;
+	top_left_lights.loop = true;
+	top_right_lights.loop = true;
+	right_lights.loop = true;
+	left_lights.loop = true;
+
+	//Animation velocity
+	middle_lights.speed = 0.17f;
+	left_lights.speed =0.10f;
+	top_right_lights.speed = right_lights.speed = top_left_lights.speed = 0.11f;
+	
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -26,12 +63,16 @@ bool ModuleSceneIntro::Start()
 
 	ball = App->textures->Load("Images/redball.png"); 
 	bonus_fx = App->audio->LoadFx("Audio/bonus.wav");
-	map = App->textures->Load("Images/pinball.png"); 
+	map = App->textures->Load("Images/Pinball2.0.png"); 
+
 
 	DrawColliders();
 
-	font_score = App->fonts->Load("pinball/7UP_SCORE_FONT.png", "0123456789", 1);
-	score = 1000000000;
+	font_score = App->fonts->Load("Images/7UP_SCORE_FONT.png", "0123456789", 1);//Load Font texture
+
+	lights_texture = App->textures->Load("Images/Lights Texture.png");
+
+	score = 0;
 	return ret;
 }
 
@@ -77,26 +118,7 @@ update_status ModuleSceneIntro::Update()
 		c = c->next;
 	}
 
-	c = boxes.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
-
-	c = ricks.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
-
+	//SCORE
 	sprintf_s(score_text, 13, "%12d", score);
 	App->fonts->BlitText(110, 34, font_score, score_text);
 
@@ -111,6 +133,8 @@ update_status ModuleSceneIntro::Update()
 	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_REPEAT)
 		score = 0;
 
+	DrawLights();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -119,87 +143,135 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	App->audio->PlayFx(bonus_fx);
 }
 
+void ModuleSceneIntro::DrawLights() {
+
+	App->renderer->Blit(lights_texture, 140, 105, &top_left_lights.GetCurrentFrame());	//Top left lights
+	App->renderer->Blit(lights_texture, 58, 218, &left_lights.GetCurrentFrame());		//Left lights
+	App->renderer->Blit(lights_texture, 285, 102, &top_right_lights.GetCurrentFrame());	//Top right lights
+	App->renderer->Blit(lights_texture, 351, 192, &right_lights.GetCurrentFrame());		//Right lights
+	App->renderer->Blit(lights_texture, 226, 328, &middle_lights.GetCurrentFrame());	//Middle lights
+}
+
 void ModuleSceneIntro::DrawColliders()
 {
-
-	int Map[150] = {
-	41, 201,
-	60, 228,
-	75, 249,
-	92, 274,
-	100, 290,
-	105, 302,
-	109, 316,
-	111, 329,
-	113, 347,
-	113, 370,
-	111, 396,
-	109, 413,
-	110, 434,
-	113, 454,
-	122, 475,
-	132, 492,
-	143, 505,
-	155, 517,
-	168, 526,
-	184, 536,
-	195, 541,
-	201, 542,
-	201, 570,
-	283, 570,
-	283, 543,
-	305, 534,
-	329, 519,
-	350, 496,
-	365, 469,
-	372, 442,
-	374, 412,
-	371, 386,
-	367, 369,
-	367, 355,
-	368, 333,
-	373, 311,
-	380, 297,
-	393, 277,
-	401, 266,
-	400, 255,
-	394, 249,
-	385, 248,
-	376, 256,
-	367, 266,
-	363, 266,
-	362, 262,
-	366, 253,
-	373, 238,
-	377, 227,
-	381, 215,
-	384, 198,
-	384, 179,
-	382, 160,
-	370, 133,
-	352, 118,
-	326, 104,
-	306, 97,
-	285, 93,
-	282, 81,
-	204, 80,
-	200, 93,
-	176, 98,
-	151, 108,
-	138, 117,
-	127, 126,
-	115, 120,
-	101, 116,
-	85, 115,
-	68, 119,
-	53, 128,
-	44, 137,
-	36, 152,
-	33, 171,
-	34, 186,
-	40, 201
+	int Map[230] = {
+		443, 266,
+		444, 234,
+		450, 225,
+		482, 189,
+		494, 173,
+		500, 156,
+		503, 138,
+		503, 123,
+		497, 105,
+		482, 86,
+		466, 77,
+		450, 72,
+		433, 73,
+		418, 78,
+		402, 89,
+		389, 106,
+		385, 114,
+		371, 114,
+		353, 105,
+		321, 98,
+		287, 93,
+		281, 81,
+		205, 81,
+		198, 94,
+		180, 96,
+		158, 105,
+		141, 115,
+		126, 127,
+		116, 121,
+		106, 117,
+		95, 115,
+		84, 115,
+		70, 119,
+		59, 124,
+		48, 133,
+		40, 144,
+		35, 157,
+		34, 168,
+		34, 182,
+		38, 195,
+		47, 210,
+		57, 224,
+		68, 240,
+		91, 273,
+		102, 292,
+		109, 313,
+		114, 335,
+		115, 355,
+		114, 376,
+		111, 396,
+		109, 414,
+		109, 427,
+		113, 452,
+		122, 476,
+		135, 495,
+		155, 517,
+		179, 534,
+		196, 541,
+		201, 542,
+		201, 570,
+		286, 570,
+		286, 543,
+		303, 536,
+		326, 522,
+		345, 503,
+		362, 478,
+		368, 463,
+		373, 445,
+		375, 427,
+		375, 406,
+		372, 387,
+		368, 369,
+		368, 336,
+		370, 325,
+		374, 310,
+		381, 295,
+		390, 281,
+		400, 270,
+		402, 264,
+		401, 256,
+		397, 250,
+		391, 248,
+		385, 248,
+		380, 252,
+		375, 257,
+		372, 261,
+		369, 265,
+		364, 267,
+		362, 265,
+		365, 253,
+		377, 227,
+		390, 201,
+		400, 180,
+		406, 167,
+		408, 157,
+		407, 148,
+		405, 140,
+		405, 130,
+		413, 115,
+		428, 101,
+		443, 98,
+		456, 101,
+		468, 110,
+		476, 123,
+		478, 137,
+		477, 149,
+		473, 160,
+		468, 168,
+		458, 180,
+		446, 192,
+		433, 206,
+		425, 215,
+		421, 231,
+		418, 245,
+		418, 265
 	};
-	map_ = App->physics->CreateChain(0, 0, Map, 150); 
+	map_ = App->physics->CreateChain(0, 0, Map, 230); 
 
 	int top_left1[30] = {
 	91, 229,
@@ -251,6 +323,36 @@ void ModuleSceneIntro::DrawColliders()
 	};
 	top_left_3 = App->physics->CreateChain(0, 0, top_left3, 24); 
 
+	int top_right[52] = {
+		311, 131,
+		305, 133,
+		301, 136,
+		299, 140,
+		297, 145,
+		297, 150,
+		300, 156,
+		303, 159,
+		345, 174,
+		345, 193,
+		341, 211,
+		338, 224,
+		336, 231,
+		336, 236,
+		338, 238,
+		341, 239,
+		344, 236,
+		348, 228,
+		352, 220,
+		357, 200,
+		361, 179,
+		361, 163,
+		360, 158,
+		356, 154,
+		318, 132,
+		313, 131
+	};
+	top_right_1 = App->physics->CreateChain(0, 0, top_right, 52); 
+
 	int middle_top1[18] = {
 	222, 121,
 	227, 121,
@@ -298,34 +400,6 @@ void ModuleSceneIntro::DrawColliders()
 	204, 295
 	};
 	middle_ = App->physics->CreateChain(0, 0, middle, 36); 
-
-	int top_right1[22] = {
-	337, 142,
-	317, 132,
-	308, 132,
-	300, 137,
-	297, 146,
-	298, 154,
-	305, 160,
-	332, 170,
-	333, 160,
-	334, 151,
-	336, 142
-	};
-	top_right_1 = App->physics->CreateChain(0, 0, top_right1, 22); 
-
-	int top_right2[18] = {
-	344, 211,
-	350, 216,
-	356, 221,
-	351, 232,
-	345, 238,
-	339, 239,
-	336, 235,
-	337, 227,
-	343, 211
-	};
-	top_right_2 = App->physics->CreateChain(0, 0, top_right2, 18); 
 
 	int bottom_right1[28] = {
 	290, 459,
@@ -432,15 +506,7 @@ void ModuleSceneIntro::DrawColliders()
 	};
 	ball_corridor_1 = App->physics->CreateChain(0, 0, ball_corridor1, 18); 
 
-	int ball_corridor2[70] = {
-		406, 136,
-		418, 144,
-		426, 155,
-		431, 170,
-		432, 186,
-		428, 204,
-		423, 224,
-		419, 248,
+	int ball_corridor2[30] = {
 		417, 272,
 		417, 304,
 		418, 570,
@@ -456,20 +522,8 @@ void ModuleSceneIntro::DrawColliders()
 		456, 339,
 		443, 339,
 		442, 276,
-		443, 246,
-		445, 230,
-		450, 208,
-		454, 192,
-		456, 172,
-		452, 152,
-		443, 134,
-		430, 120,
-		412, 110,
-		390, 107,
-		375, 109,
-		366, 112
 	};
-	ball_corridor_2 = App->physics->CreateChain(0, 0, ball_corridor2, 70);
+	ball_corridor_2 = App->physics->CreateChain(0, 0, ball_corridor2, 30);
 
 	int football1[30] = {
 	190, 237,
@@ -528,3 +582,4 @@ void ModuleSceneIntro::DrawColliders()
 	};
 	football_3 = App->physics->CreateChain(0, 0, football3, 30, 1.0f); 
 }
+
