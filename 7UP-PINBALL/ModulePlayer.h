@@ -25,6 +25,7 @@ public:
 	SDL_Texture* kickers_tx;
 	SDL_Texture* ball_tx; 
 	SDL_Texture* launcher_tx; 
+	SDL_Texture* ball_lost_tx; 
 
 	//Player attributes
 	uint tries = 5;
@@ -51,6 +52,11 @@ private:
 	Animation launcher_animation_static;
 	Animation launching_animation;
 	Animation* current_animation = nullptr;
+
+	Animation ball_lost_anim;  
+	Animation ball_lost_idle; 
+	Animation* ball_animation = nullptr; 
+	int ball_counter = 0; 
 
 	PhysBody* ball; 
 

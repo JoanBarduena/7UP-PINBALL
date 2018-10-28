@@ -26,7 +26,7 @@ bool ModuleSceneIntro::Start()
 
 	ball = App->textures->Load("Images/redball.png"); 
 	bonus_fx = App->audio->LoadFx("Audio/bonus.wav");
-	map = App->textures->Load("Images/pinball.png"); 
+	map = App->textures->Load("Images/Pinball2.0.png"); 
 
 	DrawColliders();
 
@@ -180,7 +180,7 @@ void ModuleSceneIntro::DrawColliders()
 	34, 186,
 	40, 201
 	};
-	map_ = App->physics->CreateChain(0, 0, Map, 150); 
+	//map_ = App->physics->CreateChain(0, 0, Map, 150); 
 
 	int top_left1[30] = {
 	91, 229,
@@ -280,7 +280,7 @@ void ModuleSceneIntro::DrawColliders()
 	};
 	middle_ = App->physics->CreateChain(0, 0, middle, 36); 
 
-	int top_right1[22] = {
+	/*int top_right1[22] = {
 	337, 142,
 	317, 132,
 	308, 132,
@@ -306,7 +306,7 @@ void ModuleSceneIntro::DrawColliders()
 	337, 227,
 	343, 211
 	};
-	top_right_2 = App->physics->CreateChain(0, 0, top_right2, 18); 
+	top_right_2 = App->physics->CreateChain(0, 0, top_right2, 18); */
 
 	int bottom_right1[28] = {
 	290, 459,

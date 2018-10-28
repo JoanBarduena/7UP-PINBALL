@@ -25,12 +25,24 @@ bool ModulePlayer::Start()
 	kickers_tx = App->textures->Load("Images/kicker.png");
 	ball_tx = App->textures->Load("Images/redball.png");
 	launcher_tx = App->textures->Load("Images/LauncherAnimation.png"); 
+	ball_lost_tx = App->textures->Load("Images/BallLost.png"); 
 
 	//Load audio
 	kicker_fx = App->audio->LoadFx("Audio/kicker.wav"); 
 
 	//Load sensor
 	dead_sensor = App->physics->CreateRectangleSensor(243, 550, 80, 20, b2_staticBody); 
+
+	//Ball Lost Pushback
+	ball_lost_anim.PushBack({ 0,9,58,8 });
+	ball_lost_anim.loop = false;
+	ball_lost_anim.speed = 1.0f;
+
+	ball_lost_idle.PushBack({ 0,0,58,8 });
+	ball_lost_idle.loop = false;
+	ball_lost_idle.speed = 1.0f;
+
+	ball_animation = &ball_lost_idle; 
 
 	//Load functions
 	LoadKickers(); 
@@ -47,6 +59,7 @@ bool ModulePlayer::CleanUp()
 	App->textures->Unload(kickers_tx);
 	App->textures->Unload(ball_tx); 
 	App->textures->Unload(launcher_tx); 
+	App->textures->Unload(ball_lost_tx); 
 
 	return true;
 }
@@ -64,6 +77,8 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	if (bodyB == dead_sensor)
 	{
+		ball_animation = &ball_lost_anim;
+		ball_counter = 0; 
 		is_dead = true; 
 		tries -= 1; 
 	}
@@ -125,6 +140,9 @@ update_status ModulePlayer::Update()
 	ball->GetPosition(x, y);
 	App->renderer->Blit(ball_tx, x, y, NULL, 1.0f, ball->GetRotation());
 
+	ball_counter++; 
+	if (ball_counter > 100) { ball_animation = &ball_lost_idle; }
+	
 	//Destroy ball
 	if (is_dead)
 	{
@@ -132,6 +150,9 @@ update_status ModulePlayer::Update()
 		Ball();
 		is_dead = false;
 	}
+
+	//Ball LOST blit
+	App->renderer->Blit(ball_lost_tx, 215, 555, &(ball_animation->GetCurrentFrame()));
 
 	return UPDATE_CONTINUE;
 }
@@ -168,8 +189,8 @@ void ModulePlayer::LoadKickers()
 
 	// RIGHT KICKER
 
-	kicker_right = App->physics->CreateRectangle(310, 492, 58, 13, -32 * DEGTORAD, b2_dynamicBody); //RECTANGLE COORDENATES
-	pivot_right = App->physics->CreateCircle(310, 492, 6, b2_staticBody); //CIRCLE COORDENATES
+	kicker_right = App->physics->CreateRectangle(308, 492, 58, 13, -20 * DEGTORAD, b2_dynamicBody); //RECTANGLE COORDENATES
+	pivot_right = App->physics->CreateCircle(308, 492, 6, b2_staticBody); //CIRCLE COORDENATES
 	kicker_right->body->SetGravityScale(30.0f);
 
 	revoluteJointDef.bodyA = kicker_right->body;
