@@ -13,11 +13,11 @@ https://github.com/JoanBarduena/7UP-PINBALL
 
 ### Controls
 
+[DOWN_ARROW_KEY]: Launcher.
+
 [LEFT_ARROW_KEY]: Left kicker. 
 
 [RIGHT_ARROW_KEY]: Right kicker. 
-
-[DOWN_ARROW_KEY]: Launcher.
 
 [R]: Restart the game.   
 
