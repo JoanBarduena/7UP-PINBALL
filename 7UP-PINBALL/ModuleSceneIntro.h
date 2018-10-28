@@ -33,7 +33,6 @@ public:
 	PhysBody* middle_top_2; 
 	PhysBody* middle_;
 	PhysBody* top_right_1;
-	PhysBody* top_right_2;
 	PhysBody* bottom_right_1; 
 	PhysBody* bottom_right_2; 
 	PhysBody* bottom_left_1; 
