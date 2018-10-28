@@ -11,6 +11,43 @@
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	map = ball = box = rick = NULL;
+
+	//Animations
+	//Pushbacks
+	/*In order to have some coordination between some animations,
+	i've added a few of extra pusbacks to some of them in which the light will be off,*/
+	for (int i = 0; i < 9; ++i) {
+		middle_lights.PushBack({32*i,0,32,181});		
+	}
+
+	for (int i = 0; i < 4; ++i) {						//light off
+		top_right_lights.PushBack({ 213,274,71,41 });
+		top_left_lights.PushBack({271, 240, 57, 34 });
+	}
+
+	for (int i = 0; i < 3; ++i) {
+		left_lights.PushBack({ 54 * i,181,54,59 });
+		top_left_lights.PushBack({57*i, 240, 57, 34});
+		top_right_lights.PushBack({71*i,274,71,41});
+		right_lights.PushBack({37*i,315,37,54});
+	}
+
+	for (int i = 0; i < 4; ++i) {						//light off
+		right_lights.PushBack({ 111,315,37,54 });
+	}
+
+	//Loops
+	middle_lights.loop = true;
+	top_left_lights.loop = true;
+	top_right_lights.loop = true;
+	right_lights.loop = true;
+	left_lights.loop = true;
+
+	//Animation velocity
+	middle_lights.speed = 0.17f;
+	left_lights.speed =0.10f;
+	top_right_lights.speed = right_lights.speed = top_left_lights.speed = 0.11f;
+	
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -26,11 +63,14 @@ bool ModuleSceneIntro::Start()
 
 	ball = App->textures->Load("Images/redball.png"); 
 	bonus_fx = App->audio->LoadFx("Audio/bonus.wav");
-	map = App->textures->Load("Images/pinball.png"); 
+	map = App->textures->Load("Images/pinball 2.0.png"); 
 
 	DrawColliders();
 
-	font_score = App->fonts->Load("Images/7UP_SCORE_FONT.png", "0123456789", 1);
+	font_score = App->fonts->Load("Images/7UP_SCORE_FONT.png", "0123456789", 1);//Load Font texture
+
+	lights_texture = App->textures->Load("Images/Lights Texture.png");
+
 	score = 0;
 	return ret;
 }
@@ -111,12 +151,23 @@ update_status ModuleSceneIntro::Update()
 	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_REPEAT)
 		score = 0;
 
+	DrawLights();
+
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	App->audio->PlayFx(bonus_fx);
+}
+
+void ModuleSceneIntro::DrawLights() {
+
+	App->renderer->Blit(lights_texture, 140, 105, &top_left_lights.GetCurrentFrame());	//Top left lights
+	App->renderer->Blit(lights_texture, 58, 218, &left_lights.GetCurrentFrame());		//Left lights
+	App->renderer->Blit(lights_texture, 285, 102, &top_right_lights.GetCurrentFrame());	//Top right lights
+	App->renderer->Blit(lights_texture, 351, 192, &right_lights.GetCurrentFrame());		//Right lights
+	App->renderer->Blit(lights_texture, 226, 328, &middle_lights.GetCurrentFrame());	//Middle lights
 }
 
 void ModuleSceneIntro::DrawColliders()
@@ -528,3 +579,4 @@ void ModuleSceneIntro::DrawColliders()
 	};
 	football_3 = App->physics->CreateChain(0, 0, football3, 30, 1.0f); 
 }
+
