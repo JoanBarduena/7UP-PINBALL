@@ -8,8 +8,8 @@ https://github.com/JoanBarduena/7UP-PINBALL
 - Joan Barduena Reyes
 [Barduena's GitHub Link](https://github.com/JoanBarduena)
 
-- Joan Marín Encinas
-[Marín's GitHub Link](https://github.com/X0KA)
+- Joan MarÃ­n Encinas
+[MarÃ­n's GitHub Link](https://github.com/X0KA)
 
 ### Controls
 
@@ -34,12 +34,16 @@ Link: http://www.freewebarcade.com/game/7up-pinball/
 - Original: 
 
 	-All balls spawned at the start of the game. 
+	
 	-The is a bucle with a hole that absorbs the ball. 
+	
 	-Football animations.
 
 - Ours 
 	-One ball is spawned and when it is destroyed it respawn another one (maximum of 5 tries). 
+	
 	-The middle tunnel works but when it respawns at the top there is no animation. 
+	
 	-Music implemented. 
 
 ### Combo implemented
@@ -49,7 +53,7 @@ Link: http://www.freewebarcade.com/game/7up-pinball/
 ### License
 MIT License
 
-Copyright (c) 2018 [Joan Barduena Reyes, Joan Marín Encinas]
+Copyright (c) 2018 [Joan Barduena Reyes, Joan MarÃ­n Encinas]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
