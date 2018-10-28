@@ -1,6 +1,7 @@
 #ifndef __ANIMATION_H__
 #define __ANIMATION_H__
 
+
 #include "SDL/include/SDL_rect.h"
 #define MAX_FRAMES 150
 
@@ -8,6 +9,7 @@ class Animation
 {
 public:
 	bool loop = true;
+
 	bool pingpong = false;
 	float speed = 1.0f;
 	SDL_Rect frames[MAX_FRAMES];
@@ -76,9 +78,9 @@ public:
 
 	void Reset()
 	{
-		current_frame = 0.0f;
-		loops = 0;
+		current_frame = 0;
+    loops=0;
 	}
 };
 
-#endif#pragma once
+#endif
