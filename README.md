@@ -17,7 +17,7 @@ https://github.com/JoanBarduena/7UP-PINBALL
 
 [RIGHT_ARROW_KEY]: Right kicker. 
 
-[SPACE]: Launcher.
+[DOWN_ARROW_KEY]: Launcher.
 
 [R]: Restart the game.   
 
@@ -39,7 +39,8 @@ Link: http://www.freewebarcade.com/game/7up-pinball/
 	
 	-Football animations.
 
-- Ours 
+- Ours: 
+
 	-One ball is spawned and when it is destroyed it respawn another one (maximum of 5 tries). 
 	
 	-The middle tunnel works but when it respawns at the top there is no animation. 
