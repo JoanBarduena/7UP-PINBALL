@@ -7,6 +7,7 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModuleWindow.h"
+#include "ModuleSceneIntro.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -32,6 +33,8 @@ bool ModulePlayer::Start()
 
 	//Load sensor
 	dead_sensor = App->physics->CreateRectangleSensor(243, 550, 80, 20, b2_staticBody); 
+	lock_sensor = App->physics->CreateRectangleSensor(390, 255, 25, 25, b2_staticBody); 
+	teleport_sensor = App->physics->CreateRectangleSensor(242, 325, 36, 8, b2_staticBody);
 
 	//Ball Lost Pushback
 	ball_lost_anim.PushBack({ 0,9,58,8 });
@@ -73,6 +76,13 @@ void ModulePlayer::Ball()
 	}
 }
 
+void ModulePlayer::Teleported_Ball()
+{
+	ball = App->physics->CreateCircle(235, 85, 9, b2_dynamicBody);
+	ball->listener = this;
+	ball_counter = 0; 
+}
+
 void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	if (bodyB == dead_sensor)
@@ -81,6 +91,16 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		ball_counter = 0; 
 		is_dead = true; 
 		tries -= 1; 
+	}
+	
+	if (bodyB == lock_sensor)
+	{
+		ball->body->SetAwake(false); 
+	}
+
+	if (bodyB == teleport_sensor)
+	{
+		is_teleported = true; 
 	}
 }
 
@@ -108,6 +128,19 @@ update_status ModulePlayer::Update()
 	{
 		joint_right->EnableMotor(false);
 	}
+
+	//RESET GAME
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		LOG("Reset lives");
+		if (tries > 0) App->physics->world->DestroyBody(ball->body);
+
+		tries = 5;
+		Ball();
+
+		App->scene_intro->score = 0;
+	}
+
 
 	int x, y;
 
@@ -139,15 +172,26 @@ update_status ModulePlayer::Update()
 	ball->GetPosition(x, y);
 	App->renderer->Blit(ball_tx, x, y, NULL, 1.0f, ball->GetRotation());
 
+	//Ball LOST animation idle
 	ball_counter++; 
-	if (ball_counter > 100) { ball_animation = &ball_lost_idle; }
-	
+	if (ball_counter > 100) ball_animation = &ball_lost_idle; 
+
+	//Lock timer
+	if (ball_counter > 400)  ball->body->SetAwake(true); 
+
 	//Destroy ball
 	if (is_dead)
 	{
 		App->physics->world->DestroyBody(ball->body);
 		Ball();
 		is_dead = false;
+	}
+
+	if (is_teleported)
+	{
+		App->physics->world->DestroyBody(ball->body);
+		Teleported_Ball(); 
+		is_teleported = false; 
 	}
 
 	//Ball LOST blit
