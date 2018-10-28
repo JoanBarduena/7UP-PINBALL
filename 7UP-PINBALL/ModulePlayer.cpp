@@ -101,11 +101,9 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		if (bodyA == App->scene_intro->football_1 ||
 			bodyA == App->scene_intro->football_2 ||
 			bodyA == App->scene_intro->football_3 ||
-			bodyA == App->scene_intro->football_4 ||
 			bodyB == App->scene_intro->football_1 ||
 			bodyB == App->scene_intro->football_2 ||
-			bodyB == App->scene_intro->football_3||
-			bodyB == App->scene_intro->football_4) {
+			bodyB == App->scene_intro->football_3) {
 
 			App->scene_intro->combo += 10;
 			App->audio->PlayFx(combo_fx);

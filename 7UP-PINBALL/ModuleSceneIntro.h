@@ -71,7 +71,4 @@ public:
 	//Music
 	Mix_Music* music;
 
-private:
-	bool debug=false;
-
 };
