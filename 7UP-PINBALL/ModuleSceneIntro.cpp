@@ -93,20 +93,14 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 	
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		debug = !debug;
 
 	App->renderer->Blit(map, 0, 0, NULL); 
 	DrawLights();
 
-	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 9, b2_dynamicBody));
-		circles.getLast()->data->listener = App->player;
-	}
+	
 
-	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50, 0, b2_dynamicBody));
-	}
 
 	// Prepare for raycast ------------------------------------------------------
 	
@@ -131,17 +125,28 @@ update_status ModuleSceneIntro::Update()
 	sprintf_s(score_text, 13, "%12d", score);
 	App->fonts->BlitText(110, 34, font_score, score_text);
 
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
-		IncreaseScore(10);
 
-	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
-		combo *= 10;
+	if (debug) {
 
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_REPEAT)
-		score += 100000000;
+		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		{
+			circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 9, b2_dynamicBody));
+			circles.getLast()->data->listener = App->player;
+		}
 
-	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_REPEAT)
-		score = 0;
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
+			IncreaseScore(10);
+
+		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+			combo *= 10;
+
+		if (App->input->GetKey(SDL_SCANCODE_B) == KEY_REPEAT)
+			score += 100000000;
+
+		if (App->input->GetKey(SDL_SCANCODE_V) == KEY_REPEAT)
+			score = 0;
+	}
+	
 
 	
 

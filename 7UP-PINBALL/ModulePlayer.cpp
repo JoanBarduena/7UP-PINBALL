@@ -173,14 +173,14 @@ update_status ModulePlayer::Update()
 	//-------------------------------------------------------------------------------------
 
 	//LAUNCHER INPUTS 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
 	{
 		jointLauncher->EnableMotor(true);
 		current_animation = &launching_animation;
 		App->audio->PlayFx(kicker_fx);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
 	{
 		jointLauncher->EnableMotor(false);
 		current_animation = &launcher_animation_static; 
