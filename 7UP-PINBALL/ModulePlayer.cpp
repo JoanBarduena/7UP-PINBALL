@@ -10,7 +10,7 @@
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	ball_tx = kickers = NULL;
+	ball_tx = kickers_tx = launcher_tx = NULL;
 }
 
 ModulePlayer::~ModulePlayer()
@@ -22,8 +22,9 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 
 	//Load textures
-	kickers = App->textures->Load("Images/kicker.png");
+	kickers_tx = App->textures->Load("Images/kicker.png");
 	ball_tx = App->textures->Load("Images/redball.png");
+	launcher_tx = App->textures->Load("Images/LauncherAnimation.png"); 
 
 	//Load audio
 	kicker_fx = App->audio->LoadFx("Audio/kicker.wav"); 
@@ -43,8 +44,9 @@ bool ModulePlayer::Start()
 bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
-	App->textures->Unload(kickers);
+	App->textures->Unload(kickers_tx);
 	App->textures->Unload(ball_tx); 
+	App->textures->Unload(launcher_tx); 
 
 	return true;
 }
@@ -97,11 +99,11 @@ update_status ModulePlayer::Update()
 
 	//LEFT KICKER
 	kicker_left->GetPosition(x, y);
-	App->renderer->Blit(kickers, x, y, NULL, 1.0f, kicker_left->GetRotation());
+	App->renderer->Blit(kickers_tx, x, y, NULL, 1.0f, kicker_left->GetRotation());
 
 	//RIGHT KICKER
 	kicker_right->GetPosition(x, y);
-	App->renderer->Blit(kickers, x, y, NULL, 1.0f, kicker_right->GetRotation() + 180);
+	App->renderer->Blit(kickers_tx, x, y, NULL, 1.0f, kicker_right->GetRotation() + 180);
 
 	//-------------------------------------------------------------------------------------
 
@@ -109,14 +111,15 @@ update_status ModulePlayer::Update()
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		jointLauncher->EnableMotor(true);
+		current_animation = &launching_animation;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 	{
 		jointLauncher->EnableMotor(false);
+		current_animation = &launcher_animation_static; 
 	}
-	launcher->GetPosition(x, y);
-	//App->renderer->Blit(launcher_tex, x - 3, y, &(current_animation->GetCurrentFrame()));
+	App->renderer->Blit(launcher_tx, 417, 433, &(current_animation->GetCurrentFrame()));
 
 	// Ball texture setting 
 	ball->GetPosition(x, y);
@@ -218,11 +221,22 @@ void ModulePlayer::Launcher()
 
 	prismaticJointDef.enableMotor = false;
 	prismaticJointDef.maxMotorForce = 400;
-	prismaticJointDef.motorSpeed = 5000;
+	prismaticJointDef.motorSpeed = 3000;
 
 	jointLauncher = (b2PrismaticJoint*)App->physics->world->CreateJoint(&prismaticJointDef);
 
-	//ANIMATIONS SOON...
+	//ANIMATIONS
+
+	launcher_animation_static.PushBack({ 166, 0, 58, 124 });
+	launcher_animation_static.loop = false;
+	launcher_animation_static.speed = 1.0f;
+
+	launching_animation.PushBack({ 77, 0, 49, 118 });
+	launching_animation.PushBack({ 0, 0, 57, 113 });
+	launching_animation.loop = false;
+	launching_animation.speed = 1.0f;
+
+	current_animation = &launcher_animation_static;
 
 }
 

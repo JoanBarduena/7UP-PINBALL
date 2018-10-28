@@ -4,6 +4,7 @@
 #include "ModuleTextures.h"
 #include "Box2D/Box2D/Box2D.h"
 #include <string>
+#include "Animation.h"
 
 class ModulePlayer : public Module
 {
@@ -21,8 +22,9 @@ public:
 
 public:
 	//Textures
-	SDL_Texture* kickers;
+	SDL_Texture* kickers_tx;
 	SDL_Texture* ball_tx; 
+	SDL_Texture* launcher_tx; 
 
 	//Player attributes
 	uint tries = 5;
@@ -44,6 +46,11 @@ public:
 	bool is_dead = false; 
 
 private:
+
+	//Animations 
+	Animation launcher_animation_static;
+	Animation launching_animation;
+	Animation* current_animation = nullptr;
 
 	PhysBody* ball; 
 

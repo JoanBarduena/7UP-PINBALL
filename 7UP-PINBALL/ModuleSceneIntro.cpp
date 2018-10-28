@@ -180,7 +180,7 @@ void ModuleSceneIntro::DrawColliders()
 	34, 186,
 	40, 201
 	};
-	//map_ = App->physics->CreateChain(0, 0, Map, 150); 
+	map_ = App->physics->CreateChain(0, 0, Map, 150); 
 
 	int top_left1[30] = {
 	91, 229,
