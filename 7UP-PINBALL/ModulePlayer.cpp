@@ -6,10 +6,11 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
+#include "ModuleWindow.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	kickers = NULL;
+	ball_tx = kickers = NULL;
 }
 
 ModulePlayer::~ModulePlayer()
@@ -19,14 +20,21 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	LOG("Loading player");
-	//Load kickers
+
+	//Load textures
 	kickers = App->textures->Load("Images/kicker.png");
+	ball_tx = App->textures->Load("Images/redball.png");
+
 	//Load audio
 	kicker_fx = App->audio->LoadFx("Audio/kicker.wav"); 
 
-	//Load of functions
+	//Load sensor
+	dead_sensor = App->physics->CreateRectangleSensor(243, 550, 80, 20, b2_staticBody); 
+
+	//Load functions
 	LoadKickers(); 
 	Launcher(); 
+	Ball(); 
 
 	return true;
 }
@@ -36,8 +44,27 @@ bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
 	App->textures->Unload(kickers);
+	App->textures->Unload(ball_tx); 
 
 	return true;
+}
+
+void ModulePlayer::Ball()
+{
+	if (tries > 0)
+	{
+		ball = App->physics->CreateCircle(455, 350, 9, b2_dynamicBody);
+		ball->listener = this;
+	}
+}
+
+void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
+{
+	if (bodyB == dead_sensor)
+	{
+		is_dead = true; 
+		tries -= 1; 
+	}
 }
 
 // Update: draw background
@@ -90,6 +117,18 @@ update_status ModulePlayer::Update()
 	}
 	launcher->GetPosition(x, y);
 	//App->renderer->Blit(launcher_tex, x - 3, y, &(current_animation->GetCurrentFrame()));
+
+	// Ball texture setting 
+	ball->GetPosition(x, y);
+	App->renderer->Blit(ball_tx, x, y, NULL, 1.0f, ball->GetRotation());
+
+	//Destroy ball
+	if (is_dead)
+	{
+		App->physics->world->DestroyBody(ball->body);
+		Ball();
+		is_dead = false;
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -158,8 +197,8 @@ void ModulePlayer::Launcher()
 	b2RevoluteJointDef revoluteJointDef;
 
 	//LAUNCHER POSITIONS OF PUSHING RECTANGLE AND STATIC RECTANGLE
-	launcher = App->physics->CreateRectangle(429, 508, 20, 80, 0, b2_dynamicBody);
-	launcher_pivot = App->physics->CreateRectangle(429, 508, 20, 20, 0, b2_staticBody);
+	launcher = App->physics->CreateRectangle(429, 508, 15, 80, 0, b2_dynamicBody);
+	launcher_pivot = App->physics->CreateRectangle(429, 508, 15, 20, 0, b2_staticBody);
 
 	b2PrismaticJointDef prismaticJointDef;
 

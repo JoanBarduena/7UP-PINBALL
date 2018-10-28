@@ -77,26 +77,7 @@ update_status ModuleSceneIntro::Update()
 		c = c->next;
 	}
 
-	c = boxes.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
-
-	c = ricks.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
-
+	//SCORE
 	sprintf_s(score_text, 13, "%12d", score);
 	App->fonts->BlitText(110, 34, font_score, score_text);
 
@@ -199,7 +180,7 @@ void ModuleSceneIntro::DrawColliders()
 	34, 186,
 	40, 201
 	};
-	map_ = App->physics->CreateChain(0, 0, Map, 150); 
+	//map_ = App->physics->CreateChain(0, 0, Map, 150); 
 
 	int top_left1[30] = {
 	91, 229,
@@ -432,7 +413,7 @@ void ModuleSceneIntro::DrawColliders()
 	};
 	ball_corridor_1 = App->physics->CreateChain(0, 0, ball_corridor1, 18); 
 
-	int ball_corridor2[70] = {
+	int ball_corridor2[72] = {
 		406, 136,
 		418, 144,
 		426, 155,
@@ -467,9 +448,10 @@ void ModuleSceneIntro::DrawColliders()
 		412, 110,
 		390, 107,
 		375, 109,
-		366, 112
+		366, 112,
+		347, 150
 	};
-	ball_corridor_2 = App->physics->CreateChain(0, 0, ball_corridor2, 70);
+	ball_corridor_2 = App->physics->CreateChain(0, 0, ball_corridor2, 72);
 
 	int football1[30] = {
 	190, 237,
