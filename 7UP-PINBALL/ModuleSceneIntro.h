@@ -3,6 +3,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "Globals.h"
+#include "Animation.h"
 
 class PhysBody;
 
@@ -17,6 +18,7 @@ public:
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void DrawColliders();
+	void DrawLights();
 
 public:
 
@@ -53,4 +55,13 @@ public:
 	int score;				//score
 	int font_score=-1;		//Load the score here
 	char score_text[13];	
+
+	//Light Animations
+	SDL_Texture* lights_texture;
+	Animation middle_lights;
+	Animation left_lights;
+	Animation top_left_lights;
+	Animation right_lights;
+	Animation top_right_lights;
+
 };
