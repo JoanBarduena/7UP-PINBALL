@@ -48,7 +48,7 @@ bool ModulePlayer::Start()
 	LoadKickers(); 
 	Launcher(); 
 	Ball(); 
-
+	
 	return true;
 }
 
@@ -178,8 +178,8 @@ void ModulePlayer::LoadKickers()
 	revoluteJointDef.enableLimit = true;
 
 	//MOTOR SPEED AND TORQUE 
-	revoluteJointDef.motorSpeed = 1500.0f * DEGTORAD;		
-	revoluteJointDef.maxMotorTorque = 1500;
+	revoluteJointDef.motorSpeed = 600.0f * DEGTORAD;		
+	revoluteJointDef.maxMotorTorque = 600;
 	revoluteJointDef.enableMotor = false;
 
 	joint_left = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
@@ -203,8 +203,8 @@ void ModulePlayer::LoadKickers()
 	revoluteJointDef.enableLimit = true;
 
 	//MOTOR SPEED AND TORQUE
-	revoluteJointDef.motorSpeed = -1500.0f * DEGTORAD;	
-	revoluteJointDef.maxMotorTorque = 1500;
+	revoluteJointDef.motorSpeed = -600.0f * DEGTORAD;
+	revoluteJointDef.maxMotorTorque = 600;
 	revoluteJointDef.enableMotor = false;
 
 	joint_right = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
@@ -235,7 +235,7 @@ void ModulePlayer::Launcher()
 
 	prismaticJointDef.enableMotor = false;
 	prismaticJointDef.maxMotorForce = 400;
-	prismaticJointDef.motorSpeed = 3000;
+	prismaticJointDef.motorSpeed = 200.0f;
 
 	jointLauncher = (b2PrismaticJoint*)App->physics->world->CreateJoint(&prismaticJointDef);
 

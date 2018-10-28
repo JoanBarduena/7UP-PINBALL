@@ -598,6 +598,6 @@ void ModuleSceneIntro::DrawColliders()
 		81, 162,
 		85, 161
 	};
-	football_4 = App->physics->CreateChain(0, 0, football4, 32, 10.0f); 
+	football_4 = App->physics->CreateChain(0, 0, football4, 32, 3.0f); 
 }
 
