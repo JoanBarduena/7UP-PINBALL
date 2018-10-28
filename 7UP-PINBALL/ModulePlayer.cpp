@@ -87,7 +87,6 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 // Update: draw background
 update_status ModulePlayer::Update()
 {
-
 	// KICKERS INPUTS
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 	{
@@ -160,7 +159,6 @@ update_status ModulePlayer::Update()
 void ModulePlayer::LoadKickers()
 {
 	// LEFT KICKER	
-
 	b2RevoluteJointDef revoluteJointDef;
 
 	kicker_left = App->physics->CreateRectangle(174, 492, 58, 13, 20 * DEGTORAD, b2_dynamicBody);
@@ -184,11 +182,9 @@ void ModulePlayer::LoadKickers()
 	revoluteJointDef.maxMotorTorque = 1500;
 	revoluteJointDef.enableMotor = false;
 
-
 	joint_left = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
 
 	// RIGHT KICKER
-
 	kicker_right = App->physics->CreateRectangle(308, 492, 58, 13, -20 * DEGTORAD, b2_dynamicBody); //RECTANGLE COORDENATES
 	pivot_right = App->physics->CreateCircle(308, 492, 6, b2_staticBody); //CIRCLE COORDENATES
 	kicker_right->body->SetGravityScale(30.0f);
@@ -212,12 +208,10 @@ void ModulePlayer::LoadKickers()
 	revoluteJointDef.enableMotor = false;
 
 	joint_right = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
-
 }
 
 void ModulePlayer::Launcher()
 {
-
 	b2RevoluteJointDef revoluteJointDef;
 
 	//LAUNCHER POSITIONS OF PUSHING RECTANGLE AND STATIC RECTANGLE
@@ -235,7 +229,6 @@ void ModulePlayer::Launcher()
 
 	prismaticJointDef.localAxisA.Set(0, 1);
 
-
 	prismaticJointDef.enableLimit = true;
 	prismaticJointDef.lowerTranslation = 0;
 	prismaticJointDef.upperTranslation = PIXEL_TO_METERS(50);
@@ -247,7 +240,6 @@ void ModulePlayer::Launcher()
 	jointLauncher = (b2PrismaticJoint*)App->physics->world->CreateJoint(&prismaticJointDef);
 
 	//ANIMATIONS
-
 	launcher_animation_static.PushBack({ 166, 0, 58, 124 });
 	launcher_animation_static.loop = false;
 	launcher_animation_static.speed = 1.0f;
@@ -258,7 +250,6 @@ void ModulePlayer::Launcher()
 	launching_animation.speed = 1.0f;
 
 	current_animation = &launcher_animation_static;
-
 }
 
 
