@@ -68,7 +68,6 @@ bool ModuleSceneIntro::Start()
 	bonus_fx = App->audio->LoadFx("Audio/bonus.wav");
 	map = App->textures->Load("Images/Pinball2.0.png"); 
 
-
 	DrawColliders();
 
 	font_score = App->fonts->Load("Images/7UP_SCORE_FONT.png", "0123456789", 1);//Load Font texture
@@ -108,7 +107,6 @@ update_status ModuleSceneIntro::Update()
 	{
 		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50, 0, b2_dynamicBody));
 	}
-
 
 	// Prepare for raycast ------------------------------------------------------
 	
@@ -594,6 +592,24 @@ void ModuleSceneIntro::DrawColliders()
 	};
 	football_3 = App->physics->CreateChain(0, 0, football3, 30, 1.0f); 
 
-	
+	int football4[32] = {
+		86, 161,
+		90, 161,
+		95, 162,
+		98, 165,
+		100, 169,
+		100, 174,
+		99, 179,
+		95, 182,
+		91, 183,
+		86, 183,
+		81, 181,
+		79, 177,
+		78, 173,
+		78, 167,
+		81, 162,
+		85, 161
+	};
+	football_4 = App->physics->CreateChain(0, 0, football4, 32, 3.0f); 
 }
 

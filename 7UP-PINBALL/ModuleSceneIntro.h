@@ -44,6 +44,7 @@ public:
 	PhysBody* football_1; 
 	PhysBody* football_2; 
 	PhysBody* football_3; 
+	PhysBody* football_4; 
 	PhysBody* ball_corridor_1; 
 	PhysBody* ball_corridor_2; 
 
