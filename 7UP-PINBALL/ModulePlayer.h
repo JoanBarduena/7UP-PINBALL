@@ -69,6 +69,8 @@ private:
 	PhysBody* launcher_pivot;
 	b2PrismaticJoint* jointLauncher;
 
+	//sfx
 	uint kicker_fx;
+	uint combo_fx;
 
 };
